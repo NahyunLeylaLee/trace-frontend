@@ -1,3 +1,8 @@
+# Next.js build output
+/.next/
+/out/
+next-env.d.ts
+
 # compiled output
 /dist
 /node_modules
@@ -51,6 +56,8 @@ pids
 *.pid
 *.seed
 *.pid.lock
+*.log
+*.tgz
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
