@@ -1,3 +1,5 @@
+import './globals.css';
+
 export const metadata = {
   title: "Home",
 };
@@ -5,7 +7,7 @@ export const metadata = {
 export default function Page() {
   return (
     <div>
-      <h1>Hello!</h1>
+      <h1 className="text-3xl font-bold underline">Hello!</h1>
     </div>
   );
 }
