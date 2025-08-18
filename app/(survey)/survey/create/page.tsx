@@ -1,73 +1,93 @@
 "use client"
 
-import { Draggable } from "@/components/Draggable";
-import { Droppable } from "@/components/Droppable";
-import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import Column from "@/components/column";
+import Input from "@/components/input";
+import { closestCorners, DndContext, DragEndEvent, KeyboardSensor, PointerSensor, TouchSensor, UniqueIdentifier, useSensor, useSensors } from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useState } from "react";
 
+interface IQuestion {
+  id: number,
+  createdAt: string,
+  updatedAt: string,
+  title: string,
+  description: string,
+  age: number,
+  term: number,
+  order: number,
+};
+
 export default function Survey() {
-  const data = [
+  const [data, setData] = useState<IQuestion[]>([
     {
       "id": 1,
       "createdAt": "2025-08-12T00:27:46.814Z",
       "updatedAt": "2025-08-12T00:27:46.814Z",
-      "title": "test",
+      "title": "question 1",
       "description": null,
       "age": 2,
       "term": 1,
-      "isActive": true,
-      "invalidAt": null,
       "order": 1,
-      "IsMain": false,
-      "IsBasic": false,
-      "startSending": false
     },
     {
       "id": 2,
       "createdAt": "2025-08-12T00:27:46.814Z",
       "updatedAt": "2025-08-12T00:27:46.814Z",
-      "title": "test2",
+      "title": "question 2",
       "description": null,
       "age": 3,
       "term": 2,
-      "isActive": true,
-      "invalidAt": null,
       "order": 2,
-      "IsMain": false,
-      "IsBasic": false,
-      "startSending": false
     },
     {
       "id": 3,
       "createdAt": "2025-08-12T00:27:46.814Z",
       "updatedAt": "2025-08-12T00:27:46.814Z",
-      "title": "test3",
+      "title": "question 3",
       "description": null,
       "age": 4,
       "term": 3,
-      "isActive": true,
-      "invalidAt": null,
       "order": 3,
-      "IsMain": false,
-      "IsBasic": false,
-      "startSending": false
     }
-  ];
-  const [isDropped, setIsDropped] = useState(false);
-  const draggableMarkup = (
-    <Draggable>Drag me</Draggable>
-  );
+  ]);
+
+  const addQuestion = (title: string) => {
+    setData(questions => [...questions, { id: data.length + 1, title, description: null, createdAt: "2025-08-12T00:27:46.814Z", updatedAt: "2025-08-12T00:27:46.814Z", age: 3, term: 3, order: 4 }])
+  };
+
+  const getDataPos = (id: UniqueIdentifier) => data.findIndex(question => question.id === id);
+
   const handleDragEnd = (event: DragEndEvent) => {
-    if (event.over && event.over.id === 'droppable') {
-      setIsDropped(true);
-    }
-  }
+    const { active, over } = event;
+    if (active.id === over.id) return;
+
+    setData(data => {
+      const originPos = getDataPos(active.id);
+      const newPos = getDataPos(over.id);
+
+      return arrayMove(data, originPos, newPos);
+    });
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      {!isDropped ? draggableMarkup : null}
-      <Droppable>
-        {isDropped ? draggableMarkup : 'Drop here'}
-      </Droppable>
-    </DndContext>
+    <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+      <h2>Create Survey</h2>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
+        <Input onSubmit={addQuestion} />
+        <Column data={data} />
+      </DndContext>
+    </div>
   );
 }
