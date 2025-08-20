@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export default function Input({ onSubmit }) {
-  const [input, setInput] = useState("");
+  const [value, setValue] = useState("");
   const handleSubmit = () => {
-    if (!input) return;
-    onSubmit(input);
-    setInput("");
+    if (!value) return;
+    onSubmit(value);
+    setValue("");
   };
   return (
-    <div>
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)}></input>
-      <button onClick={handleSubmit}>Add</button>
+    <div className="flex flex-row justify-between w-full bg-[#f2f2f3] rounded-lg p-2">
+      <input type="text" value={value} onChange={(e) => setValue(e.target.value)} className="w-full rounded-lg mr-2 p-2" />
+      <button onClick={handleSubmit} className="bg-white rounded-lg p-2">Add</button>
     </div>
   );
 }
