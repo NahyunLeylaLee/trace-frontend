@@ -10,6 +10,7 @@ export default function Section({ data, onSubmit }) {
     <div className="flex flex-col bg-[#f2f2f3] rounded-lg p-[15px] w-5/6 gap-4">
       <SortableContext items={data} strategy={verticalListSortingStrategy}>
         <h3 className="font-bold">Section 1</h3>
+        <Input onSubmit={onSubmit} />
         {data.map((question) => (
           <Question key={question.id} title={question.title} id={question.id}>
             <SortableContext items={question.answer.map((i) => i.id)}>

@@ -78,7 +78,7 @@ export default function Survey() {
   ]);
 
   const addQuestion = (title: string) => {
-    setData(questions => [...questions, { id: `question-${data.length + 1}`, title, description: null, createdAt: "2025-08-12T00:27:46.814Z", updatedAt: "2025-08-12T00:27:46.814Z", age: 3, term: 3, order: 4, answer: [{ id: "answer-41", title: "answer 1" }] }])
+    setData(questions => [...questions, { id: `question-${data.length + 1}`, title, description: null, createdAt: "2025-08-12T00:27:46.814Z", updatedAt: "2025-08-12T00:27:46.814Z", age: 3, term: 3, order: 4, answer: [{ id: `answer-${data.length + 1}1`, title: "answer 1" }] }])
   };
 
   // Find the value of the items
